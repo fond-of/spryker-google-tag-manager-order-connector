@@ -10,6 +10,7 @@
   ],
   "require": {
     "php": ">=7.2",
+    "spryker/money": "^1.0 || ^2.0",
     "fond-of-spryker/google-tag-manager-extension": "dev-main"
   },
   "require-dev": {
