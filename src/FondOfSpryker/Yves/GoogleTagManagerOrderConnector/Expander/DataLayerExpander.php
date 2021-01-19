@@ -65,7 +65,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     {
         $products = [];
 
-        foreach ($orderTransfer->getItems() as $itemTransfer) {
+        foreach ($this->mergeMultipleProducts($orderTransfer) as $itemTransfer) {
             $products[] = [
                 ModuleConstants::FIELD_PRODUCT_ID => $itemTransfer->getIdProductAbstract(),
                 ModuleConstants::FIELD_PRODUCT_SKU => $itemTransfer->getSku(),
@@ -76,6 +76,31 @@ class DataLayerExpander implements DataLayerExpanderInterface
                 ModuleConstants::FIELD_PRODUCT_TAX_RATE => $itemTransfer->getTaxRate(),
                 ModuleConstants::FIELD_PRODUCT_QUANTITY => $itemTransfer->getQuantity(),
             ];
+        }
+
+        return $products;
+    }
+
+    /**
+     * @param OrderTransfer $orderTransfer
+     *
+     * @return ItemTransfer[]
+     */
+    protected function mergeMultipleProducts(OrderTransfer $orderTransfer): array
+    {
+        /** @var ItemTransfer[] $products */
+        $products = [];
+
+        foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if (array_key_exists($itemTransfer->getSku(), $products)) {
+                $products[$itemTransfer->getSku()]->setQuantity(
+                    $products[$itemTransfer->getSku()]->getQuantity() + $itemTransfer->getQuantity()
+                );
+
+                continue;
+            }
+
+            $products[$itemTransfer->getSku()] = $itemTransfer;
         }
 
         return $products;
