@@ -24,6 +24,7 @@ interface GoogleTagManagerOrderConnectorConstants
     public const FIELD_PRODUCTS_SKUS = 'transactionProductsSkus';
     public const FIELD_VOUCHER_CODE = 'voucherCode';
     public const FIELD_DISCOUNT_TOTAL = 'discountTotal';
+    public const FIELD_CUSTOMER_EMAIL = 'customerEmail';
 
     public const FIELD_PRODUCT_ID = 'id';
     public const FIELD_PRODUCT_SKU = 'sku';

@@ -52,6 +52,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
         $dataLayer[ModuleConstants::FIELD_PRODUCTS_SKUS] = $this->getSkus($orderTransfer);
         $dataLayer[ModuleConstants::FIELD_VOUCHER_CODE] = implode(',', $this->getVoucherCodes($orderTransfer));
         $dataLayer[ModuleConstants::FIELD_DISCOUNT_TOTAL] = $this->getDiscountTotal($orderTransfer);
+        $dataLayer[ModuleConstants::FIELD_CUSTOMER_EMAIL] = $this->getCustomerEmail($orderTransfer);
 
         return $dataLayer;
     }
@@ -288,5 +289,23 @@ class DataLayerExpander implements DataLayerExpanderInterface
         }
 
         return $codes;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return string|null
+     */
+    protected function getCustomerEmail(OrderTransfer $orderTransfer): ?string
+    {
+        if ($orderTransfer->getBillingAddress() === null) {
+            return null;
+        }
+
+        if ($orderTransfer->getBillingAddress()->getEmail() === null) {
+            return null;
+        }
+
+        return $orderTransfer->getBillingAddress()->getEmail();
     }
 }
