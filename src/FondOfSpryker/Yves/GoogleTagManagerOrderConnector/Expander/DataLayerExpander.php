@@ -114,6 +114,10 @@ class DataLayerExpander implements DataLayerExpanderInterface
      */
     protected function getTotal(OrderTransfer $orderTransfer): float
     {
+        if ($orderTransfer->getTotals() === null) {
+            return 0;
+        }
+
         return $this->moneyPlugin->convertIntegerToDecimal(
             $orderTransfer->getTotals()->getGrandTotal()
         );
@@ -126,6 +130,10 @@ class DataLayerExpander implements DataLayerExpanderInterface
      */
     protected function getSubtotal(OrderTransfer $orderTransfer): float
     {
+        if ($orderTransfer->getTotals() === null) {
+            return 0;
+        }
+
         return $this->moneyPlugin->convertIntegerToDecimal(
             $orderTransfer->getTotals()->getSubtotal()
         );
@@ -138,6 +146,14 @@ class DataLayerExpander implements DataLayerExpanderInterface
      */
     protected function getTax(OrderTransfer $orderTransfer): float
     {
+        if ($orderTransfer->getTotals() === null) {
+            return 0;
+        }
+
+        if ($orderTransfer->getTotals()->getTaxTotal() === null) {
+            return 0;
+        }
+
         return $this->moneyPlugin->convertIntegerToDecimal(
             $orderTransfer->getTotals()->getTaxTotal()->getAmount()
         );
@@ -153,6 +169,14 @@ class DataLayerExpander implements DataLayerExpanderInterface
         $shipmentMethods = [];
 
         foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if ($itemTransfer->getShipment() === null) {
+                continue;
+            }
+
+            if ($itemTransfer->getShipment()->getMethod() === null) {
+                continue;
+            }
+
             if (!in_array($itemTransfer->getShipment()->getMethod()->getName(), $shipmentMethods)) {
                 $shipmentMethods[] = $itemTransfer->getShipment()->getMethod()->getName();
             }
