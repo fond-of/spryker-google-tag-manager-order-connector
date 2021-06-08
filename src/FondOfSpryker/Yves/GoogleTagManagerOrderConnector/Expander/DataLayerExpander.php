@@ -83,13 +83,13 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return ItemTransfer[]
+     * @return \Generated\Shared\Transfer\ItemTransfer[]
      */
     protected function mergeMultipleProducts(OrderTransfer $orderTransfer): array
     {
-        /** @var ItemTransfer[] $products */
+        /** @var \Generated\Shared\Transfer\ItemTransfer[] $products */
         $products = [];
 
         foreach ($orderTransfer->getItems() as $itemTransfer) {
