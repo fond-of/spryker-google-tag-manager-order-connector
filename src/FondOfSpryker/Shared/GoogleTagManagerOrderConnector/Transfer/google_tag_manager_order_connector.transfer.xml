@@ -11,18 +11,19 @@
         <property name="payments" singular="payment" type="Payment[]"/>
         <property name="billingAddresses" type="Address[]" singular="billingAddress"/>
         <property name="abstractAttributes" singular="abstractAttribute" type="array"/>
+        <property name="items" singular="item" type="Item[]"/>
     </transfer>
 
     <transfer name="BillingAddress">
         <property name="email" type="string"/>
     </transfer>
 
-    <transfer name="Total">
+    <transfer name="Totals">
         <property name="grandTotal" type="int"/>
         <property name="subtotal" type="int"/>
         <property name="shipmentTotal" type="int"/>
         <property name="discountTotal" type="int"/>
-        <property name="taxTotals" singular="taxTotal" type="TaxTotal"/>
+        <property name="taxTotal" type="TaxTotal"/>
     </transfer>
 
     <transfer name="TaxTotal">
@@ -30,15 +31,17 @@
     </transfer>
 
     <transfer name="Item">
+        <property name="idProductAbstract" type="int"/>
         <property name="shipment" type="Shipment"/>
         <property name="sku" type="string"/>
         <property name="name" type="string"/>
         <property name="unitPrice" type="int"/>
         <property name="unitTaxAmount" type="int"/>
+        <property name="abstractAttributes" type="array"/>
     </transfer>
 
     <transfer name="Shipment">
-        <property name="shipmentMethod" type="ShipmentMethod"/>
+        <property name="method" type="ShipmentMethod"/>
     </transfer>
 
     <transfer name="ShipmentMethod">
