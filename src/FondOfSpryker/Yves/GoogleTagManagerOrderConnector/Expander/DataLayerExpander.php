@@ -266,21 +266,24 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
      * @return float|null
      */
     protected function getTotalWithoutShippingAmount(OrderTransfer $orderTransfer): ?float
     {
-        $shipmentTotal = $orderTransfer->getTotals() instanceof TotalsTransfer
-            ? (int)$orderTransfer->getTotals()->getShipmentTotal() : null;
-
-        $grandTotal = $orderTransfer->getTotals() instanceof TotalsTransfer
-            ? (int)$orderTransfer->getTotals()->getGrandTotal() : null;
-
-        if ($shipmentTotal === null || $grandTotal === null) {
+        if ($orderTransfer->getTotals() === null) {
             return null;
         }
 
-        return $this->moneyPlugin->convertIntegerToDecimal($grandTotal - $shipmentTotal);
+        $expenseTotal = (int)$orderTransfer->getTotals()->getExpenseTotal();
+        $grandTotal = (int)$orderTransfer->getTotals()->getGrandTotal();
+
+        if ($expenseTotal === null || $grandTotal === null) {
+            return null;
+        }
+
+        return $this->moneyPlugin->convertIntegerToDecimal($grandTotal - $expenseTotal);
     }
 
     /**
